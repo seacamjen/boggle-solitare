@@ -1,8 +1,10 @@
 package com.epicodus.bogglesolitaire;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -11,77 +13,22 @@ import java.util.concurrent.ThreadLocalRandom;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     @Bind(R.id.playButton) Button mPlayButton;
-    private Character[] allLetters = new Character[] {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-    };
-    private Character[] vowels = new Character[] {'A', 'E', 'I', 'O', 'U', 'Y'};
-    private ArrayList<Character> currentLetterSet= new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentLetterSet = generateLetters();
         ButterKnife.bind(this);
-
-        ArrayList<Character> testLetterSet = new ArrayList<>();
-        testLetterSet.add('A');
-        testLetterSet.add('B');
-        testLetterSet.add('C');
-        testLetterSet.add('D');
-        testLetterSet.add('E');
-        testLetterSet.add('F');
-        testLetterSet.add('O');
-        testLetterSet.add('U');
-        String testWord = "cade";
-        if(isValidWordInLetterSet(testWord, testLetterSet)){
-         Log.d("success", "Yay!!");
-        }
-
+        mPlayButton.setOnClickListener(this);
     }
 
-    public ArrayList<Character> generateLetters(){
-        ArrayList<Character> output = new ArrayList<>();
-        for (int i =0; i<6; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0,allLetters.length);
-            output.add(allLetters[randomNum]);
+    @Override
+    public void onClick(View v){
+        if(v==mPlayButton){
+            Intent intent = new Intent(MainActivity.this, GameplayActivity.class);
+            startActivity(intent);
         }
-        for(int i=0; i<2; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0,vowels.length);
-            output.add(vowels[randomNum]);
-        }
-        return output;
     }
-
-    public boolean isValidWordInLetterSet(String word, ArrayList<Character> letterSet){
-        boolean returnVal = false;
-        if(word.length()<3 || word.length()>8){
-            returnVal =  false;
-        } else{
-            word = word.toUpperCase();
-            int originalLetterSetSize = letterSet.size();
-            for(int i=0; i<word.length(); i++){
-                Character test = word.charAt(i);
-                if(letterSet.contains(word.charAt(i))){
-                    int letterMatchIndex = letterSet.indexOf(word.charAt(i));
-                    letterSet.remove(letterMatchIndex);
-                    if(originalLetterSetSize - word.length() == letterSet.size()){
-                        returnVal = true;
-                    }
-                } else if (!letterSet.contains(word.charAt(i))){
-                    returnVal = false;
-                } else {
-                    returnVal = false;
-                }
-            }
-        }
-
-        Log.d("returnVal", String.valueOf(returnVal));
-        return returnVal;
-    }
-
-
 }
