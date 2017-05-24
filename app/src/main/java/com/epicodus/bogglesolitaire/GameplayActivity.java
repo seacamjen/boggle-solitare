@@ -1,6 +1,7 @@
 package com.epicodus.bogglesolitaire;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import static java.util.concurrent.ThreadLocalRandom.current;
 public class GameplayActivity extends AppCompatActivity implements View.OnClickListener {
     @Bind (R.id.wordSubmitText) Button mWordSubmitText;
     @Bind (R.id.answerText) EditText mAnswerText;
+    @Bind (R.id.timerDisplay) TextView mTimerDisplay;
     GridView gridView;
     private Character[] allLetters = new Character[] {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -38,6 +41,16 @@ public class GameplayActivity extends AppCompatActivity implements View.OnClickL
         gridView = (GridView) findViewById(R.id.baseGridView);
         gridView.setAdapter(new BoggleLetterAdapter(this, currentLetterSet));
         mWordSubmitText.setOnClickListener(this);
+        new CountDownTimer(10000, 1000){
+            public void onTick(long millisUntilFinished){
+                mTimerDisplay.setText("Time remaining: " + millisUntilFinished/1000);
+            }
+            public void onFinish(){
+                Intent intent = new Intent(GameplayActivity.this, ResultsActivity.class);
+                intent.putStringArrayListExtra("results", results);
+                startActivity(intent);
+            }
+        }.start();
     }
 
     @Override
@@ -45,12 +58,10 @@ public class GameplayActivity extends AppCompatActivity implements View.OnClickL
         String word = mAnswerText.getText().toString();
         if (isValidWordInLetterSet(word, currentLetterSet) && !results.contains(word.toUpperCase())) {
            results.add(word.toUpperCase());
-            for(int i=0; i<results.size(); i++){
-                Log.d("result", results.get(i));
-            }
         } else {
             Toast.makeText(GameplayActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
         }
+        mAnswerText.setText("");
     }
 
     public ArrayList<Character> generateLetters(){
