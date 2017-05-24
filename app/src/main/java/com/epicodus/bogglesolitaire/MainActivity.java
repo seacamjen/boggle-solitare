@@ -3,22 +3,30 @@ package com.epicodus.bogglesolitaire;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+    @Bind(R.id.playButton) Button mPlayButton;
     private Character[] allLetters = new Character[] {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
     private Character[] vowels = new Character[] {'A', 'E', 'I', 'O', 'U', 'Y'};
     private ArrayList<Character> currentLetterSet= new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         currentLetterSet = generateLetters();
+        ButterKnife.bind(this);
+
         ArrayList<Character> testLetterSet = new ArrayList<>();
         testLetterSet.add('A');
         testLetterSet.add('B');
