@@ -23,7 +23,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.epicodus.bogglesolitaire.MainActivity"></meta-data>
         </activity>
-        <activity android:name=".ResultsActivity"></activity>
+        <activity android:name=".ResultsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.epicodus.bogglesolitaire.GameplayActivity">
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>

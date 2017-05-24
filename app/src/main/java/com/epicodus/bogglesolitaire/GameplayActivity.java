@@ -41,7 +41,7 @@ public class GameplayActivity extends AppCompatActivity implements View.OnClickL
         gridView = (GridView) findViewById(R.id.baseGridView);
         gridView.setAdapter(new BoggleLetterAdapter(this, currentLetterSet));
         mWordSubmitText.setOnClickListener(this);
-        new CountDownTimer(10000, 1000){
+        new CountDownTimer(60000, 1000){
             public void onTick(long millisUntilFinished){
                 mTimerDisplay.setText("Time remaining: " + millisUntilFinished/1000);
             }
